@@ -10,20 +10,27 @@ Nsnet creat docker container enviroment with flexible network.
   * ex2: `$ iptables -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT`
 * Python: 3.6.9
   * ex: `$ pyenv install 3.6.9 && pyenv local 3.6.9`
+  * Related packages
+    * python3-setuptools
+    * build-essential
+    * libssl-dev
+    * libffi-dev
+    * python3-dev
+    * python3-pip
 
 ## Install & Setup
 
 ```shell
-$ git clone https://github.com/shin-ch13/network-lab.git && cd nsnet
+% git clone https://github.com/shin-ch13/network-lab.git && cd nsnet
 # install
-$ sudo python3 setup.py develop
+% sudo python3 setup.py develop
 or 
-$ sudo pip3 install -e .
+% sudo pip3 install -e .
 # uninstall
-$ sudo rm /usr/local/lib/python3.6/dist-packages/nsnet-*
-$ sudo rm /usr/local/bin/nsnet
-$ sudo rm /usr/local/lib/python3.6/dist-packages/link_dokcer_ns-*
-$ sudo rm /usr/local/bin/link-dokcer-ns
+% sudo rm /usr/local/lib/python3.6/dist-packages/nsnet-*
+% sudo rm /usr/local/bin/nsnet
+% sudo rm /usr/local/lib/python3.6/dist-packages/link_dokcer_ns-*
+% sudo rm /usr/local/bin/link-dokcer-ns
 ```
 
 ## Usage
@@ -47,16 +54,20 @@ optional arguments:
 ## Run Example
 
 ```shell
-$ cd nsnet/test/simple_network
+% cd nsnet/test/simple_network
 ### create docker container enviroment with flexible network
-$ sudo nsnet create -cf docker-compose.yml -nf net.yaml
+% sudo nsnet create -cf docker-compose.yml -nf net.yaml
 ### test or develop container enviroment
 ### "node1" is service name in docker-compose.yml
-$ sudo nsnet shell node1
+% sudo nsnet shell node1
+  root@d176d2b3323a:/# ip a
+  root@d176d2b3323a:/# ping 20.0.0.2
+  root@d176d2b3323a:/# ping6 2001:2222:2222::2
+  root@d176d2b3323a:/# exit
 ### after edit docker-compose.yml or net.yaml
-$ sudo nsnet recreate
+% sudo nsnet recreate
 ### destroy docker container enviroment
-sudo nsnet destroy
+% sudo nsnet destroy
 ```
 
 ## Links
