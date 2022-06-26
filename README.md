@@ -17,6 +17,7 @@ Nsnet creat docker container enviroment with flexible network.
     * libffi-dev
     * python3-dev
     * python3-pip
+* cue
 
 ## Install & Setup
 
