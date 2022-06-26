@@ -60,10 +60,10 @@ optional arguments:
 ### test or develop container enviroment
 ### "node1" is service name in docker-compose.yml
 % sudo nsnet shell node1
-  root@d176d2b3323a:/# ip a
-  root@d176d2b3323a:/# ping 20.0.0.2
-  root@d176d2b3323a:/# ping6 2001:2222:2222::2
-  root@d176d2b3323a:/# exit
+  root@xxxxx:/# ip a
+  root@xxxxx:/# ping 20.0.0.2
+  root@xxxxx:/# ping6 2001:2222:2222::2
+  root@xxxxx:/# exit
 ### after edit docker-compose.yml or net.yaml
 % sudo nsnet recreate
 ### destroy docker container enviroment
