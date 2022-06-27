@@ -1,0 +1,76 @@
+commands:
+  ce2:
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'log file /var/log/frr/frr.log'
+        -c 'interface lo'
+        -c ' ip addr 112.112.112.112/32'
+        -c 'exit'
+        -c 'ip route 0.0.0.0/0 172.16.112.11'
+        -c 'ip route 111.111.111.111/32 172.16.112.11'
+        -c 'ip route 114.114.114.114/32 172.16.112.11'
+        -c 'ip route 115.115.115.115/32 172.16.112.11'
+    # create vrf
+    - cmd: ip link add VPN-A-1 type vrf table 100
+    - cmd: ip link set VPN-A-1 up
+    # create br0
+    - cmd: ip link add br0 type bridge vlan_filtering 1
+    - cmd: ip link set dev br0 up
+    # create vxlan100
+    - cmd: ip link add vxlan100 type vxlan nolearning dstport 4789 id 100 local 112.112.112.112
+    - cmd: ip link set dev vxlan100 master br0
+    - cmd: bridge vlan add vid 100 dev br0 self
+    - cmd: bridge vlan add vid 100 dev vxlan100 untagged pvid
+    - cmd: ip link set dev vxlan100 promisc on
+    - cmd: ip link set dev vxlan100 mtu 9000
+    - cmd: ip link set dev vxlan100 up
+    - cmd: ip link add link br0 name br0.100 type vlan id 100
+    - cmd: ip link set dev br0.100 mtu 9000
+    - cmd: ip link set dev br0.100 up
+    - cmd: ip link set br0.100 vrf VPN-A-1
+    # create vxlan102
+    - cmd: ip link add vxlan102 type vxlan nolearning dstport 4789 id 102 local 112.112.112.112
+    - cmd: ip link set dev vxlan102 master br0
+    - cmd: bridge vlan add vid 102 dev br0 self
+    - cmd: bridge vlan add vid 102 dev vxlan102 untagged pvid
+    - cmd: ip link set dev vxlan102 promisc on
+    - cmd: ip link set dev vxlan102 mtu 9000
+    - cmd: ip link set dev vxlan102 up
+    - cmd: ip link add link br0 name br0.102 type vlan id 102
+    - cmd: ip link set dev br0.102 mtu 9000   
+    - cmd: ip link set dev br0.102 up
+    - cmd: ip addr add 10.0.1.1/24 dev br0.102
+    - cmd: ip link set br0.102 vrf VPN-A-1
+    # create netns h2
+    - cmd: ip netns add h2
+    - cmd: ip link add h2-veth0 netns h2 type veth peer name ce2-veth0
+    - cmd: ip netns exec h2 ip addr add 10.0.1.12/24 dev h2-veth0
+    - cmd: ip netns exec h2 ip link set dev h2-veth0 up
+    - cmd: ip netns exec h2 ip route add default via 10.0.1.1
+    - cmd: ip link set dev ce2-veth0 master br0
+    - cmd: ip link set dev ce2-veth0 promisc on
+    - cmd: ip link set dev ce2-veth0 up
+    - cmd: bridge vlan add vid 102 dev ce2-veth0 untagged pvid
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'vrf VPN-A-1'
+        -c ' vni 100'
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'router bgp 65001'
+        -c ' bgp router-id 112.112.112.112'
+        -c ' no bgp default ipv4-unicast'
+        -c ' neighbor evpn-peer peer-group'
+        -c ' neighbor evpn-peer remote-as 65001'
+        -c ' neighbor evpn-peer update-source 112.112.112.112'
+        -c ' neighbor evpn-peer capability extended-nexthop'
+        -c ' neighbor 111.111.111.111 peer-group evpn-peer'
+        -c ' neighbor 114.114.114.114 peer-group evpn-peer'
+        -c ' neighbor 115.115.115.115 peer-group evpn-peer'
+        -c ' address-family ipv4 unicast'
+        -c '  neighbor evpn-peer activate'
+        -c '  neighbor evpn-peer soft-reconfiguration inbound'
+        -c ' address-family l2vpn evpn'
+        -c '  neighbor evpn-peer activate'
+        -c '  advertise-all-vni'
+        -c 'exit'

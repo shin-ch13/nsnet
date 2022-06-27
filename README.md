@@ -16,8 +16,7 @@ Nsnet creat docker container enviroment with flexible network.
     * libssl-dev
     * libffi-dev
     * python3-dev
-    * python3-pip
-* cue
+      * python3-pip
 
 ## Install & Setup
 
@@ -36,6 +35,8 @@ or
 
 ## Usage
 
+nsnet usage
+
 ```shell
 usage: nsnet [-h] {create,recreate,destroy,shell} ...
 
@@ -52,10 +53,18 @@ optional arguments:
   -h, --help            show this help message and exit
 ```
 
+optional cue language usage to generate net.yaml from scattered yaml file
+
+```shell
+% docker run --rm -it -v $PWD:/cue/app -w /cue/app shinch13/cue:0.4.3 cue export config/networks*.yaml config/commands*.yaml --out yaml > net.yaml
+```
+
 ## Run Example
 
 ```shell
 % cd nsnet/test/simple_network
+### generate net.yaml
+% docker run --rm -it -v $PWD:/cue/app -w /cue/app shinch13/cue:0.4.3 cue export config/networks*.yaml config/commands*.yaml --out yaml > net.yaml
 ### create docker container enviroment with flexible network
 % sudo nsnet create -cf docker-compose.yml -nf net.yaml
 ### test or develop container enviroment

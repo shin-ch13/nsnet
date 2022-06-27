@@ -1,0 +1,68 @@
+commands:
+  pe1:
+    - cmd: sysctl -w net.mpls.conf.lo.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net11.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.platform_labels=1024 > /dev/null
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 11.11.11.11/32'
+        -c ' ip ospf passive'
+        -c 'exit'
+        -c 'router ospf'
+        -c ' ospf router-id 11.11.11.11'
+        -c ' network 11.11.11.11/32 area 0.0.0.0'
+        -c ' network 172.16.11.0/24 area 0.0.0.0'
+        -c 'exit'
+        -c 'mpls ldp'
+        -c ' router-id 11.11.11.11'
+        -c ' address-family ipv4'
+        -c '  discovery transport-address 11.11.11.11'
+        -c '  interface lo'
+        -c '  interface net11'
+        -c 'exit'
+    - cmd: ip link add VPN-A type vrf table 10
+    - cmd: ip link add VPN-B type vrf table 20
+    - cmd: ip link set VPN-A up
+    - cmd: ip link set VPN-B up
+    - cmd: ip link set net111 vrf VPN-A
+    - cmd: ip link set net112 vrf VPN-A
+    - cmd: ip link set net113 vrf VPN-B
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'ip route 111.111.111.111/32 172.16.111.111 vrf VPN-A'
+        -c 'ip route 112.112.112.112/32 172.16.112.112 vrf VPN-A'
+        -c 'ip route 113.113.113.113/32 172.16.113.113 vrf VPN-B'        
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'router bgp 65000'
+        -c ' neighbor 12.12.12.12 remote-as 65000'
+        -c ' neighbor 12.12.12.12 update-source 11.11.11.11'
+        -c ' neighbor 13.13.13.13 remote-as 65000'
+        -c ' neighbor 13.13.13.13 update-source 11.11.11.11'
+        -c ' address-family ipv4 vpn'
+        -c '  neighbor 12.12.12.12 activate'
+        -c '  neighbor 13.13.13.13 activate'
+        -c 'exit'
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'router bgp 65000 vrf VPN-A'
+        -c ' address-family ipv4 unicast'
+        -c '  label vpn export auto'
+        -c '  redistribute static'
+        -c '  rd vpn export 65000:1'
+        -c '  rt vpn both 65000:100'
+        -c '  import vpn'
+        -c '  export vpn'
+        -c 'exit'
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'router bgp 65000 vrf VPN-B'
+        -c ' address-family ipv4 unicast'
+        -c '  label vpn export auto'
+        -c '  redistribute static'
+        -c '  rd vpn export 65000:2'
+        -c '  rt vpn both 65000:200'
+        -c '  import vpn'
+        -c '  export vpn'
+        -c 'exit'

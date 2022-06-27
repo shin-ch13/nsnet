@@ -1,0 +1,21 @@
+commands:
+  router1:
+    - cmd: sysctl -w net.mpls.conf.lo.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net1.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net2.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.platform_labels=1024 > /dev/null
+#    - cmd: >-
+#        vtysh -c 'conf t'
+#        -c 'interface lo'
+#        -c ' ip addr 1.1.1.1/32'
+#        -c 'exit'
+#        -c 'router ospf'
+#        -c ' network 1.1.1.1/32 area 0.0.0.0'
+#        -c ' network 10.1.1.0/24 area 0.0.0.0'
+#        -c ' network 172.16.1.0/24 area 0.0.0.0'
+#        -c ' network 172.16.2.0/24 area 0.0.0.0'
+#        -c 'exit'
+#        -c 'interface net6'
+#        -c ' ip ospf passive'
+#        -c 'exit'
+    - cmd: ip route add 10.1.2.0/24 encap mpls 100 via 172.16.1.2

@@ -1,0 +1,27 @@
+networks:
+  network1:
+    desc: 10.0.0.0/24
+    conn: direct
+    members:
+      - { name: node1, iface: eth0, ip: [10.0.0.1/24] }
+      - { name: router1, iface: eth0, ip: [10.0.0.10/24] }
+  network2:
+    desc: 20.0.0.0/24
+    conn: bridge
+    members:
+      - { name: router1, iface: eth1, ip: [20.0.0.10/24] }
+      - { name: node2, iface: eth0, ip: [20.0.0.2/24] }
+      - { name: node3, iface: eth0, ip: [20.0.0.3/24] }
+  network3:
+    desc: 2001:1111:1111::/64
+    conn: direct
+    members:
+      - { name: node1, iface: eth1, ip: ['2001:1111:1111::1/64'] }
+      - { name: router2, iface: eth0, ip: ['2001:1111:1111::10/64'] }
+  network4:
+    desc: 2001:2222:2222::/64
+    conn: bridge
+    members:
+      - { name: router2, iface: eth1, ip: ['2001:2222:2222::10/64'] }
+      - { name: node2, iface: eth1, ip: ['2001:2222:2222::2/64'] }
+      - { name: node4, iface: eth0, ip: ['2001:2222:2222::4/64'] }

@@ -1,0 +1,4 @@
+commands:
+  node1:
+    - cmd: 'ip route add 20.0.0.0/24 via 10.0.0.10 dev eth0'
+    - cmd: 'ip -6 route add 2001:2222:2222::/64 via 2001:1111:1111::10 dev eth1'

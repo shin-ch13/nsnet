@@ -1,0 +1,43 @@
+networks:
+  network1:
+    desc: 172.16.1.0/24
+    conn: direct
+    members:
+      - { name: router1, iface: net1, ip: [172.16.1.1/24] }
+      - { name: router2, iface: net1, ip: [172.16.1.2/24] }
+  network2:
+    desc: 172.16.2.0/24
+    conn: direct
+    members:
+      - { name: router1, iface: net2, ip: [172.16.2.1/24] }
+      - { name: router3, iface: net2, ip: [172.16.2.3/24] }
+  network3:
+    desc: 172.16.3.0/24
+    conn: direct
+    members:
+      - { name: router2, iface: net3, ip: [172.16.3.2/24] }
+      - { name: router3, iface: net3, ip: [172.16.3.3/24] }
+  network4:
+    desc: 172.16.4.0/24
+    conn: direct
+    members:
+      - { name: router2, iface: net4, ip: [172.16.4.2/24] }
+      - { name: router4, iface: net4, ip: [172.16.4.4/24] }
+  network5:
+    desc: 172.16.5.0/24
+    conn: direct
+    members:
+      - { name: router3, iface: net5, ip: [172.16.5.3/24] }
+      - { name: router4, iface: net5, ip: [172.16.5.4/24] }
+  network6:
+    desc: 10.1.1.0/24
+    conn: direct
+    members:
+      - { name: node1, iface: net6, ip: [10.1.1.10/24] }
+      - { name: router1, iface: net6, ip: [10.1.1.1/24] }
+  network7:
+    desc: 10.1.2.0/24
+    conn: direct
+    members:
+      - { name: node2, iface: net7, ip: [10.1.2.40/24] }
+      - { name: router4, iface: net7, ip: [10.1.2.4/24] }  
