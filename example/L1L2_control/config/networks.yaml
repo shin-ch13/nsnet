@@ -1,0 +1,16 @@
+networks:
+  network1:
+    conn: direct
+    members:
+      - { name: node1, iface: eth1 }
+      - { name: node2, iface: eth1 }
+  network2:
+    conn: direct
+    members:
+      - { name: node1, iface: eth2 }
+      - { name: node2, iface: eth2 }
+  network3:
+    conn: direct
+    members:
+      - { name: node1, iface: eth3 }
+      - { name: node2, iface: eth3 }

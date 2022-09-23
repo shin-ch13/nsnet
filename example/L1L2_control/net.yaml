@@ -1,0 +1,72 @@
+networks:
+  network1:
+    desc: 10.0.0.0/24
+    conn: direct
+    members:
+      - name: node1
+        iface: eth1
+      - name: node2
+        iface: eth1
+  network2:
+    conn: bridge
+    members:
+      - name: node1
+        iface: eth2
+      - name: node2
+        iface: eth2
+  network3:
+    conn: direct
+    members:
+      - name: node1
+        iface: eth3
+      - name: node2
+        iface: eth3
+commands:
+  node1:
+    - cmd: ip link add br0 type bridge vlan_filtering 1
+    - cmd: ip link set dev br0 up
+    - cmd: bridge vlan add vid 10 dev br0 self
+    - cmd: ip link add link br0 name br0.10 type vlan id 10
+    - cmd: ip link set dev br0.10 up
+    - cmd: ip addr add 10.0.0.1/24 dev br0.10
+    - cmd: ip link set dev eth1 master br0
+    - cmd: bridge vlan add vid 10 dev eth1 untagged pvid
+    - cmd: ip link add bond0 type bond miimon 100 mode 802.3ad lacp_rate fast xmit_hash_policy layer2+3
+    - cmd: ip link set bond0 up
+    - cmd: ip link set eth2 down
+    - cmd: ip link set eth3 down
+    - cmd: ip link set eth2 master bond0
+    - cmd: ip link set eth3 master bond0
+    - cmd: ip link add link bond0 name bond0.20 type vlan id 20
+    - cmd: ip addr add 20.0.0.1/24 dev bond0.20
+    - cmd: ip link set dev bond0.20 up
+    - cmd: ip link add link bond0 name bond0.30 type vlan id 30
+    - cmd: ip addr add 30.0.0.1/24 dev bond0.30
+    - cmd: ip link set dev bond0.30 up
+    - cmd: tc qdisc add dev br0.10 root tbf rate 10mbit burst 40kb limit 400kb
+    - cmd: tc qdisc add dev bond0.20 root tbf rate 20mbit burst 80kb limit 800kb
+    - cmd: tc qdisc add dev bond0.30 root tbf rate 30mbit burst 120kb limit 1200kb
+  node2:
+    - cmd: ip link add br0 type bridge vlan_filtering 1
+    - cmd: ip link set dev br0 up
+    - cmd: bridge vlan add vid 10 dev br0 self
+    - cmd: ip link add link br0 name br0.10 type vlan id 10
+    - cmd: ip link set dev br0.10 up
+    - cmd: ip addr add 10.0.0.2/24 dev br0.10
+    - cmd: ip link set dev eth1 master br0
+    - cmd: bridge vlan add vid 10 dev eth1 untagged pvid
+    - cmd: ip link add bond0 type bond miimon 100 mode 802.3ad lacp_rate fast xmit_hash_policy layer2+3
+    - cmd: ip link set bond0 up
+    - cmd: ip link set eth2 down
+    - cmd: ip link set eth3 down
+    - cmd: ip link set eth2 master bond0
+    - cmd: ip link set eth3 master bond0
+    - cmd: ip link add link bond0 name bond0.20 type vlan id 20
+    - cmd: ip addr add 20.0.0.2/24 dev bond0.20
+    - cmd: ip link set dev bond0.20 up
+    - cmd: ip link add link bond0 name bond0.30 type vlan id 30
+    - cmd: ip addr add 30.0.0.2/24 dev bond0.30
+    - cmd: ip link set dev bond0.30 up
+    - cmd: tc qdisc add dev br0.10 root tbf rate 10mbit burst 40kb limit 400kb
+    - cmd: tc qdisc add dev bond0.20 root tbf rate 20mbit burst 80kb limit 800kb
+    - cmd: tc qdisc add dev bond0.30 root tbf rate 30mbit burst 120kb limit 1200kb
