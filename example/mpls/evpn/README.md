@@ -1,4 +1,4 @@
-# mpls_l2vpn
+# EVPN
 
 ## Topology
 
@@ -15,6 +15,13 @@
 ```
 
 ## Run
+
+Nsnet command
+
+```shell
+% docker run --rm -it -v $PWD:/cue/app -w /cue/app shinch13/cue:0.4.3 cue export config/networks*.yaml config/commands*.yaml --out yaml > net.yaml
+% sudo nsnet create 
+```
 
 Advertise EVPN Type2 Forcibly
 
@@ -33,7 +40,7 @@ L2VNI Test
 
 ```shell
 % sudo nsnet shell ce1 && ip netns exec h1 ping -c2 10.0.0.15
-% sudo nsnet shell ce2 && ip netns exec h2 ping -c2 10.0.0.16
+% sudo nsnet shell ce3 && ip netns exec h3 ping -c2 10.0.0.16
 ```
 
 L3VNI Test

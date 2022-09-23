@@ -7,14 +7,43 @@
 ## Host Requirement
 
 ```shell
-sudo apt install linux-modules-extra-`uname -r` 
+% sudo apt install linux-modules-extra-`uname -r` 
+% sudo modprobe mpls_router mpls_iptunnel mpls_gso
+% lsmod | grep mpls 
 ```
 
 ## Run
 
+Nsnet command
+
+```shell
+% docker run --rm -it -v $PWD:/cue/app -w /cue/app shinch13/cue:0.4.3 cue export config/networks*.yaml config/commands*.yaml --out yaml > net.yaml
+% sudo nsnet create 
+```
+
+Node1
+
+```shell
+% sudo nsnet shell node1
+root@11850533c17b:/# ping 10.1.2.40
+```
+
+Node2
+
+```shell
+% sudo nsnet shell node2
+root@23c81ac41c4f:/# tcpdump -i any -n -l | grep ICMP
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
+
+14:51:21.034402 IP 10.1.1.10 > 10.1.2.40: ICMP echo request, id 12, seq 1, length 64
+14:51:21.034426 IP 10.1.2.40 > 10.1.1.10: ICMP echo reply, id 12, seq 1, length 64
+```
+
 Router1
 
 ```shell
+% sudo nsnet shell router1
 root@a0add3a23d9d:/# tcpdump -i any -n -l | grep ICMP
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
@@ -28,6 +57,7 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 Router2
 
 ```shell
+% sudo nsnet shell router2
 root@ade01f24ff69:/# tcpdump -i any -n -l | grep ICMP
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
@@ -41,6 +71,7 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 Router3
 
 ```shell
+% sudo nsnet shell router3
 root@fc9b58435c5b:/# tcpdump -i any -n -l | grep ICMP
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
@@ -54,6 +85,7 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 Router4
 
 ```shell
+% sudo nsnet shell router4
 root@a0d343477e4a:/# tcpdump -i any -n -l | grep ICMP
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes

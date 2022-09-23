@@ -213,7 +213,7 @@ class Nsnet:
     if proc.returncode == 0:
       for log in proc.stderr.decode('utf8').split('\n'): logger.info(log)
       proc = subprocess.run(['docker-compose','ps'],stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-      for log in proc.stdout.decode('utf8').split('\n'): logger.info(log)
+      for log in proc.stdout.decode('utf8').split('\n'): logger.info(log.encode('ascii', 'ignore').decode('utf8'))
     else:
       for log in proc.stderr.decode('utf8').split('\n'): logger.error(log)
       sys.exit(1)
@@ -234,7 +234,7 @@ class Nsnet:
     if proc.returncode == 0:
       for log in proc.stderr.decode('utf8').split('\n'): logger.info(log)
       proc = subprocess.run(['docker-compose','ps'],stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-      for log in proc.stdout.decode('utf8').split('\n'): logger.info(log)
+      for log in proc.stdout.decode('utf8').split('\n'): logger.info(log.encode('ascii', 'ignore').decode('utf8'))
     else:
       for log in proc.stderr.decode('utf8').split('\n'): logger.error(log)
       sys.exit(1)

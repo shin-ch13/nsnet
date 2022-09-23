@@ -1,0 +1,29 @@
+commands:
+  p2:
+    - cmd: sysctl -w net.mpls.conf.lo.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net1.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net3.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net4.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.platform_labels=1024 > /dev/null
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 2.2.2.2/32'
+        -c ' ip ospf passive'
+        -c 'exit'
+        -c 'router ospf'
+        -c ' ospf router-id 2.2.2.2'
+        -c ' network 2.2.2.2/32 area 0.0.0.0'
+        -c ' network 172.16.1.0/24 area 0.0.0.0'
+        -c ' network 172.16.3.0/24 area 0.0.0.0'
+        -c ' network 172.16.4.0/24 area 0.0.0.0'
+        -c 'exit'
+        -c 'mpls ldp'
+        -c ' router-id 2.2.2.2'
+        -c ' address-family ipv4'
+        -c '  discovery transport-address 2.2.2.2'
+        -c '  interface lo'
+        -c '  interface net1'
+        -c '  interface net3'
+        -c '  interface net4'
+        -c 'exit'

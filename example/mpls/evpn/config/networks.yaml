@@ -1,0 +1,85 @@
+networks:
+  network1:
+    desc: 172.16.1.0/24
+    conn: direct
+    members:
+      - { name: p1, iface: net1, ip: [172.16.1.1/24] }
+      - { name: p2, iface: net1, ip: [172.16.1.2/24] }
+  network2:
+    desc: 172.16.2.0/24
+    conn: direct
+    members:
+      - { name: p1, iface: net2, ip: [172.16.2.1/24] }
+      - { name: p3, iface: net2, ip: [172.16.2.3/24] }
+  network3:
+    desc: 172.16.3.0/24
+    conn: direct
+    members:
+      - { name: p2, iface: net3, ip: [172.16.3.2/24] }
+      - { name: p3, iface: net3, ip: [172.16.3.3/24] }
+  network4:
+    desc: 172.16.4.0/24
+    conn: direct
+    members:
+      - { name: p2, iface: net4, ip: [172.16.4.2/24] }
+      - { name: p4, iface: net4, ip: [172.16.4.4/24] }
+  network5:
+    desc: 172.16.5.0/24
+    conn: direct
+    members:
+      - { name: p3, iface: net5, ip: [172.16.5.3/24] }
+      - { name: p4, iface: net5, ip: [172.16.5.4/24] }
+  network11:
+    desc: 172.16.11.0/24
+    conn: direct
+    members:
+      - { name: p1, iface: net11, ip: [172.16.11.1/24] }
+      - { name: pe1, iface: net11, ip: [172.16.11.11/24] }
+  network12:
+    desc: 172.16.12.0/24
+    conn: direct
+    members:
+      - { name: p1, iface: net12, ip: [172.16.12.1/24] }
+      - { name: pe2, iface: net12, ip: [172.16.12.12/24] }
+  network13:
+    desc: 172.16.13.0/24
+    conn: direct
+    members:
+      - { name: p4, iface: net13, ip: [172.16.13.4/24] }
+      - { name: pe3, iface: net13, ip: [172.16.13.13/24] }
+  network111:
+    desc: 172.16.111.0/24
+    conn: direct
+    members:
+      - { name: pe1, iface: net111, ip: [172.16.111.11/24] }
+      - { name: ce1, iface: net111, ip: [172.16.111.111/24] }
+  network112:
+    desc: 172.16.112.0/24
+    conn: direct
+    members:
+      - { name: pe1, iface: net112, ip: [172.16.112.11/24] }
+      - { name: ce2, iface: net112, ip: [172.16.112.112/24] }
+  network113:
+    desc: 172.16.113.0/24
+    conn: direct
+    members:
+      - { name: pe1, iface: net113, ip: [172.16.113.11/24] }
+      - { name: ce3, iface: net113, ip: [172.16.113.113/24] }
+  network114:
+    desc: 172.16.114.0/24
+    conn: direct
+    members:
+      - { name: pe2, iface: net114, ip: [172.16.114.12/24] }
+      - { name: ce4, iface: net114, ip: [172.16.114.114/24] }
+  network115:
+    desc: 172.16.115.0/24
+    conn: direct
+    members:
+      - { name: pe3, iface: net115, ip: [172.16.115.13/24] }
+      - { name: ce5, iface: net115, ip: [172.16.115.115/24] }
+  network116:
+    desc: 172.16.116.0/24
+    conn: direct
+    members:
+      - { name: pe3, iface: net116, ip: [172.16.116.13/24] }
+      - { name: ce6, iface: net116, ip: [172.16.116.116/24] }

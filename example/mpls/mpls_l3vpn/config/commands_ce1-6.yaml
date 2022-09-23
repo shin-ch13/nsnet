@@ -1,0 +1,43 @@
+commands:
+  ce1:
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 10.0.0.1/24'
+        -c 'exit'
+        -c 'ip route 0.0.0.0/0 172.16.111.11'
+  ce2:
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 10.0.1.1/24'
+        -c 'exit'
+        -c 'ip route 0.0.0.0/0 172.16.112.11'
+  ce3:
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 10.0.0.1/24'
+        -c 'exit'
+        -c 'ip route 0.0.0.0/0 172.16.113.11'
+  ce4:
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 192.168.0.1/24'
+        -c 'exit'
+        -c 'ip route 0.0.0.0/0 172.16.114.12'
+  ce5:
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 10.0.2.1/24'
+        -c 'exit'
+        -c 'ip route 0.0.0.0/0 172.16.115.13'
+  ce6:
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 10.0.1.1/24'
+        -c 'exit'
+        -c 'ip route 0.0.0.0/0 172.16.116.13'

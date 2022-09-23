@@ -1,0 +1,26 @@
+commands:
+  router3:
+    - cmd: sysctl -w net.mpls.conf.lo.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net2.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net3.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net5.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.platform_labels=1024 > /dev/null
+    - cmd: >-
+        vtysh -c 'conf t'
+        -c 'interface lo'
+        -c ' ip addr 3.3.3.3/32'
+        -c 'exit'
+        -c 'router ospf'
+        -c ' network 3.3.3.3/32 area 0.0.0.0'
+        -c ' network 172.16.2.0/24 area 0.0.0.0'
+        -c ' network 172.16.3.0/24 area 0.0.0.0'
+        -c ' network 172.16.5.0/24 area 0.0.0.0'
+        -c 'exit'
+        -c 'mpls ldp'
+        -c ' address-family ipv4'
+        -c '  discovery transport-address 3.3.3.3'
+        -c '  interface lo'
+        -c '  interface net2'
+        -c '  interface net3'
+        -c '  interface net5'
+        -c 'exit'

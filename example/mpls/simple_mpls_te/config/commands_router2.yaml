@@ -1,0 +1,20 @@
+ commands:
+  router2:
+    - cmd: sysctl -w net.mpls.conf.lo.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net1.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net3.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.conf.net4.input=1 > /dev/null
+    - cmd: sysctl -w net.mpls.platform_labels=1024 > /dev/null
+#    - cmd: >-
+#        vtysh -c 'conf t'
+#        -c 'interface lo'
+#        -c ' ip addr 2.2.2.2/32'
+#        -c 'exit'
+#        -c 'router ospf'
+#        -c ' network 2.2.2.2/32 area 0.0.0.0'
+#        -c ' network 172.16.1.0/24 area 0.0.0.0'
+#        -c ' network 172.16.3.0/24 area 0.0.0.0'
+#        -c ' network 172.16.4.0/24 area 0.0.0.0'
+#        -c 'exit'
+    - cmd: ip -M route add 100 via inet 172.16.3.3 as 101
+    - cmd: ip -M route add 200 via inet 172.16.3.3 as 201
