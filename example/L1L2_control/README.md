@@ -97,7 +97,7 @@ balance-xor
   * `slow`の場合、パートナーが30秒ごとにLACPDUを送信するよう指定します。
   * `fast`の場合、パートナーが1秒ごとにLACPDUを送信するよう指定します。
 
-### example
+### example_Bondind
 
 設定
 
@@ -127,7 +127,7 @@ balance-xor
 % cat /proc/net/bonding/bond0
 ```
 
-### Links
+### Links_Bondind
 
 * <https://www.kernel.org/doc/Documentation/networking/bonding.txt>
 * <https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/networking_guide/sec-using_channel_bonding>
@@ -156,7 +156,7 @@ TBFでは指定されたレートを超えないようにパケットを通すqd
 * limit(最大サイズ)
   * バケツが空の時に到着したパケットがキュー(limit)に溜まり最大サイズを超えるとパケットは破棄される
 
-### example
+### example_tc
 
 設定
 
@@ -179,7 +179,7 @@ CONFIG_HZ=250
 % sudo tc qdisc show dev eth0
 ```
 
-### Links
+### Links_tc
 
 * <https://dev.classmethod.jp/articles/shaping_outbound_traffic_from_linux/>
 * <https://cha-shu00.hatenablog.com/entry/2020/02/10/131836#tbftoken-bucket-filter>
