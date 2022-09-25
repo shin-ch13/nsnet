@@ -1,6 +1,20 @@
 # Nsnet
 
-Nsnet creat docker container enviroment with flexible network.
+Nsnetは、Dockerのオーケストレーションツールである[docker-compose](https://docs.docker.com/compose/)とDockerの構成要素である[Namespace](https://man7.org/linux/man-pages/man7/namespaces.7.html)のLinux管理コマンド(ipコマンド)をラッパーして、ネットワークテスト環境を提供する。
+
+Nsnetでは各マシン(コンテナ)スペックは既存の`docker-compose.yaml`に記述し、  
+コンテナ間のネットワークおよびアドレス割り当て、コンテナ起動後に設定するコマンドを独自の`net.yaml`に記述して、コンテナをデプロイすることができる。  
+
+下記の付加価値を既存のdocker-composeに主に提供する。
+
+* `docker-compose.yaml`の記述量の肥大化防止
+  * `net.yaml`はcue_languageにより分離カスタム可能
+* コンテナ間のネットワーク作成、各コンテナのアドレッシングの簡素化
+  * コンテナ名、インタフェース名、IPアドレスを宣言するだけのケーブル/ネットワーク作成
+  * bridge接続(コンテナ3つ以上のスイッチ接続)の提供
+* コンテナ環境のより高速なスクラッチ&リビルド(コンテナの作成と廃棄)
+* 細かいロギングによるデプロイ時のエラーデバックの改善
+* Nsnetのコンテナデプロイ時に、`/var/run/netns`からコンテナプロセスのFDにシンボリックリンクを自動生成するため、Dockerコマンドだけでなくipコマンドでもコンテナ(Namespace)が操作可能
 
 ## Host Requirement
 
@@ -63,19 +77,26 @@ optional cue language usage to generate net.yaml from scattered yaml file
 
 ```shell
 % cd nsnet/test/simple_network
+
+### check config file to generate net.yaml
+% ls config/
 ### generate net.yaml
 % docker run --rm -it -v $PWD:/cue/app -w /cue/app shinch13/cue:0.4.3 cue export config/networks*.yaml config/commands*.yaml --out yaml > net.yaml
-### create docker container enviroment with flexible network
+
+### create docker container enviroment with network
 % sudo nsnet create -cf docker-compose.yml -nf net.yaml
-### test or develop container enviroment
 ### "node1" is service name in docker-compose.yml
+### Login Terminal of "node1"
 % sudo nsnet shell node1
   root@xxxxx:/# ip a
   root@xxxxx:/# ping 20.0.0.2
   root@xxxxx:/# ping6 2001:2222:2222::2
   root@xxxxx:/# exit
+
 ### after edit docker-compose.yml or net.yaml
+% docker run --rm -it -v $PWD:/cue/app -w /cue/app shinch13/cue:0.4.3 cue export config/networks*.yaml config/commands*.yaml --out yaml > net.yaml
 % sudo nsnet recreate
+
 ### destroy docker container enviroment
 % sudo nsnet destroy
 ```
