@@ -43,6 +43,7 @@ Linuxではmodeを選択してBondingの論理インターフェースを作成�
 ### mode
 
 active-backup
+
 * 1つの物理インターフェースでのみ応答
 * 受信はActiveポートからのみARP応答することで誘導
 * example
@@ -52,6 +53,7 @@ active-backup
 ```
 
 balance-xor
+
 * Static LAG
 * 送信元/宛先情報を元に負荷分散
 * 負荷分散に使う情報はパラメータであるxmit_hash_policyによって設定可能
@@ -63,6 +65,7 @@ balance-xor
 ```
 
 802.3ad
+
 * Dynamic LAG (LACP方式)
 * 送信元/宛先情報を元に負荷分散
 * 負荷分散に使う情報はパラメータであるxmit_hash_policyによって設定可能
@@ -125,6 +128,7 @@ balance-xor
 ```
 
 ### Links
+
 * <https://www.kernel.org/doc/Documentation/networking/bonding.txt>
 * <https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/networking_guide/sec-using_channel_bonding>
 * <http://www.uni-koeln.de/~pbogusze/posts/LACP_configuration_using_iproute2.html>
